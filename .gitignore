@@ -1,3 +1,14 @@
-
+*.o
 *.ipch
 *.bin
+*.hex
+*.lk
+*.dbg
+*.lk
+*.lst
+*.cof
+*.mp
+*.lis
+*.mak
+*.SRC
+test_key.prj
