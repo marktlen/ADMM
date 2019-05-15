@@ -11,10 +11,10 @@
 
 #define P_COM PORTC
 //COM对应位置
-#define P_COM1_P 4
-#define P_COM2_P 5
-#define P_COM3_P 6
-#define P_COM4_P 7
+#define W_COM1 4
+#define W_COM2 5
+#define W_COM3 6
+#define W_COM4 7
 
 #define  Led_Data1    display2[0]   //数码管1
 #define  Led_Data2    display2[1]   //数码管2
@@ -32,14 +32,14 @@
 
 #define P_SEG   PORTB
 
-#define		SIGA		0x01
-#define		SIGB		0x02
-#define		SIGC		0x04
-#define		SIGD		0x08
-#define		SIGE		0x10
-#define		SIGF		0x20
-#define		SIGG		0x40
-#define		SIGM		0x80
+#define		SIGA		(unsigned char)0x01
+#define		SIGB		(unsigned char)0x02
+#define		SIGC		(unsigned char)0x04
+#define		SIGD		(unsigned char)0x08
+#define		SIGE		(unsigned char)0x10
+#define		SIGF		(unsigned char)0x20
+#define		SIGG		(unsigned char)0x40
+#define		SIGM		(unsigned char)0x80
 
 
 #define		SMG_0			SIGA|SIGB|SIGC|SIGD|SIGE|SIGF         	

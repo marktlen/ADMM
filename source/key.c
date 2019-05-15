@@ -1,41 +1,47 @@
 #include "key.h"
 
 extern unsigned char B_set_time = 0;
+extern unsigned char blink_flag;
 extern unsigned char display2[4];
+unsigned char B_i;
+extern uchar hour;
+extern uchar min;
+unsigned char B_flag[5];
+unsigned char B_state[5];
 
 unsigned char get_key(unsigned char key_input)
 {
-    static unsigned char key_state = 0, key_time = 0;
+    static unsigned char key_time = 0;
     unsigned char key_press, key_return = 0;
     key_press = key_input;
-    switch (key_state)
+    switch (B_state[B_i])
     {
     case key_state_0:
         if (!key_press)
         {
-            key_state = key_state_1;
+            B_state[B_i] = key_state_1;
         }
         break;
     case key_state_1:
         if (!key_press)
         {
-            key_state = key_state_2;
+            B_state[B_i] = key_state_2;
             key_time = 0;
         }
         else
         {
-            key_state = key_state_0;
+            B_state[B_i] = key_state_0;
         }
         break;
     case key_state_2:
         if(key_press)
         {
-            key_state = key_state_0;
+            B_state[B_i] = key_state_0;
             key_return = 1;
         }
         else if (++key_time >= hold_time)
         {
-            key_state = key_state_3;
+            B_state[B_i] = key_state_3;
             key_time = 0;
             key_return = 2;
         }
@@ -43,15 +49,10 @@ unsigned char get_key(unsigned char key_input)
     case key_state_3:
         if (key_press)
         {
-            key_state = key_state_0;
+            B_state[B_i] = key_state_0;
         }
         else
         {
-            // if (++key_time >= add_period)
-            // {
-            //     key_time = 0;
-            //     key_return = 2;
-            // }
             key_return = 2;
         }
         break;
@@ -61,38 +62,41 @@ unsigned char get_key(unsigned char key_input)
 
 void Key_scan(void)
 {
+    B_i = 0;
+    B_flag[B_i]=get_key(key_clock);
     if (get_key(key_clock) == 1)
     {
-        PORTA |= (1<<5);
+        P_LED_AM |= (1<<W_LED_AM);
     }
-    if (get_key(key_clock) == 2 && B_set_time == 0)
-    {
-        PORTA |= (1<<6);
-        B_set_time = 1;
-    }
-    if (B_set_time)
-    {
-        PORTA |= (1<<4);
-        // if (get_key(key_set) == 1)
-        // {
-        //     //保存时间
-        //     B_set_time = 0;
-        //     return;
-        // }
-        // if (get_key(key_clock) == 1)
-        // {
-        //     display2[0]++;
-        // }
-        // if (get_key(key_clock) == 2)
-        // {
-        //     display2[1]++;
-        // }
-    }
-    if (get_key(key_set) == 1)
-    {
-        B_set_time = 0;
-        PORTA |= (1<<5);
-        PORTA |= (1<<6);
-    }
+    
+    B_i++;
+    B_flag[B_i]=get_key(key_set);
+    hour=B_flag[B_i];
+    B_i++;
+    B_flag[B_i]=get_key(key_pre);
+    min=B_flag[B_i]*10;
+    B_i++;
+    B_flag[B_i]=get_key(key_ok);
+    min=B_flag[B_i];
+    B_i++;
+    // if (get_key(key_set) == 1)
+    // {
+    //     P_LED_AM |= (1<<W_LED_AM);
+    //     B_set_time = 0;
+    // }
+    // if (get_key(key_clock) == 1)
+    // {
+    //     P_LED_AM |= (1<<W_LED_AM);
+    // }
+    // if (get_key(key_clock) == 2 && B_set_time == 0)
+    // {
+    //     P_LED_PM |= (1<<W_LED_PM);
+    //     B_set_time = 1;
+    // }
+    // if (B_set_time)
+    // {
+    //     P_LED_AM |= (1<<W_LED_AM);
+    //     blink_flag = 1;
+    // }
     
 }

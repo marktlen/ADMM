@@ -3,8 +3,8 @@
 uchar MainTime = 0;
 uchar B_MainLoop = 0;
 
-uchar hour = 10;
-uchar min = 33;
+uchar hour = 0;
+uchar min = 0;
 
 void port_init(void)
 {
