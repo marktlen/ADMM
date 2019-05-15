@@ -6,6 +6,9 @@ uchar B_MainLoop = 0;
 uchar hour = 0;
 uchar min = 0;
 
+extern unsigned char SEG_state;
+extern unsigned char blink_flag;
+
 void port_init(void)
 {
 	PORTA = 0x00;   
@@ -57,6 +60,18 @@ void timer0_ovf_isr(void)
 		MainTime = 0;
 		B_MainLoop = 1;
 	}
+	// if (blink_flag)
+	// {
+	// 	if (SEG_state)
+	// 	{
+	// 		SEG_state = 0;
+	// 	}
+	// 	else
+	// 	{
+	// 		SEG_state = 1;
+	// 	}
+	// }
+	
 }
 
 void main(void)

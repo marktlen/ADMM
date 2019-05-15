@@ -4,7 +4,7 @@
 unsigned char display2[4];
 unsigned char i;
 unsigned char blink_flag = 0;
-unsigned char LED_state = 1;
+unsigned char SEG_state = 1;
 
 const unsigned char SmgTab[]={
 	SMG_0,
@@ -39,6 +39,7 @@ void DelayXms(unsigned int x)
 
 void TurnOff_AllLED(void)
 {
+	// P_SEG &= SMG_Off;
     P_COM1 |= (1<<W_COM1);
 	P_COM2 |= (1<<W_COM2);
 	P_COM3 |= (1<<W_COM3);
@@ -52,9 +53,9 @@ void display_time(unsigned char hour,unsigned char min)  //显示时间
     display2[1] = SmgTab[hour%10];
     display2[2] = SmgTab[min/10];
     display2[3] = SmgTab[min%10];
-	if (blink_flag)
+	if (blink_flag == 1)	//是否闪烁
 	{
-		if (LED_state)
+		if (SEG_state)	//在闪烁时，数码管状态
 		{
 			for (i = 0; i < 4; i++)
 			{
@@ -64,15 +65,9 @@ void display_time(unsigned char hour,unsigned char min)  //显示时间
 				P_SEG &= SMG_Off;
 				P_COM |= (1<<COM_P[i]);
 			}
-			LED_state = 0;
-		}
-		else
-		{
-			DelayXms(5);
-			LED_state = 1;
 		}
 	}
-	else
+	else	//不闪烁，正常显示
 	{
 		for (i = 0; i < 4; i++)
 		{
@@ -83,4 +78,5 @@ void display_time(unsigned char hour,unsigned char min)  //显示时间
 			P_COM |= (1<<COM_P[i]);
 		}
 	}
+	
 }
