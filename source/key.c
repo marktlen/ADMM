@@ -7,6 +7,7 @@ extern unsigned char display2[4];   //晶码管当前显示内容
 unsigned char B_i;  //按钮序号
 extern uchar hour;  //时钟小时
 extern uchar min;   //时钟分钟
+unsigned char key_time[5] = 0; //保持时间
 unsigned char B_flag[5];    //按钮触发标记
 unsigned char B_state[5];   //按钮功能标记
 
@@ -71,6 +72,11 @@ unsigned char get_key(unsigned char key_input)
         else
         {
             key_return = 2; //依然在进行长按，标记长按状态
+            if (++key_time[B_i] >= 100)		// 按键时间计数
+            {
+                key_time[B_i] = 0;			// 按下时间>0.3s，清按键计数器
+                key_return = 3;		// 输出"3"
+            }
         }
         break;
     }
@@ -81,19 +87,44 @@ unsigned char get_key(unsigned char key_input)
 void Key_scan(void)
 {
     B_flag[1]=get_key(key_clock);   //访问clock按钮，获得状态
-    if (B_flag[1] == 1) //点击clock
+    B_flag[0]=get_key(key_set); //访问set按钮
+
+    if (B_state[1] == 1)
     {
-        P_LED_AM |= (1 << W_LED_AM);
+        if (B_flag[1] == 1) //点击clock
+        {
+            P_LED_AM &= ~(1 << W_LED_AM);            
+        }
+        if (B_flag[1] == 2) //长按clock
+        {
+            P_LED_ALARM &= ~(1<< W_LED_ALARM);
+        }
+        if (B_flag[0] == 1) //点击set
+        {
+            P_LED_PM &= ~(1 << W_LED_PM);
+            B_state[1] = 0; //设置系统时间关闭
+            blink_flag = 0;
+        }
     }
-    if (B_flag[1] == 2) //长按clock
+    else if (B_state[0] == 1)
     {
-        P_LED_ALARM |= (1<< W_LED_ALARM);
-        blink_flag = 1; //晶码管开启闪烁
-        B_state[1] = 1; //设置系统时间开启
+        /* code */
     }
-    B_flag[0]=get_key(key_set);
-    if (B_flag[0] == 1) //点击set
+    else
     {
-        P_LED_PM |= (1 << W_LED_PM);
-    }
+        if (B_flag[1] == 1) //点击clock
+        {
+            P_LED_AM |= (1 << W_LED_AM);
+        }
+        if (B_flag[1] == 2) //长按clock
+        {
+            P_LED_ALARM |= (1<< W_LED_ALARM);
+            blink_flag = 1; //晶码管开启闪烁
+            B_state[1] = 1; //设置系统时间开启
+        }
+        if (B_flag[0] == 1) //点击set
+        {
+            P_LED_PM |= (1 << W_LED_PM);
+        }
+    }   
 }

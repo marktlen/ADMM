@@ -29,12 +29,6 @@ void TurnOff_AllLED(void)
 
 void display(void)  //显示时间
 {
-
-    // P_COM1 |= (1<<W_COM1);
-	// P_COM2 |= (1<<W_COM2);
-	// P_COM3 |= (1<<W_COM3);
-	// P_COM4 |= (1<<W_COM4);
-	// P_SEG = SMG_Off;
 	if (blink_flag == 1)	//是否闪烁
 	{
 		if (SEG_state)	//在闪烁时，数码管状态
