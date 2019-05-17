@@ -108,14 +108,15 @@ void Key_scan(void)
     {
         if (B_flag[1] == 1) //点击clock
         {
-            P_LED_AM &= ~(1 << W_LED_AM);     
-            Hex_To_Bcd(hour,++min);
+            P_LED_AM &= ~(1 << W_LED_AM);
+            ++min;
+            Hex_To_Bcd();
         }
         if (B_flag[1] == 3) //长按clock
         {
             P_LED_ALARM &= ~(1<< W_LED_ALARM);
             min += 10;
-            Hex_To_Bcd(hour,min);
+            Hex_To_Bcd();
         }
         if (B_flag[0] == 1) //点击set
         {

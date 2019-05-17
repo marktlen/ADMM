@@ -12,6 +12,8 @@ uchar counter = 0;
 extern unsigned char SEG_state;	//晶码管开关状态
 // extern unsigned char blink_flag;
 extern unsigned char ALARM_flag;	//警报灯状态
+extern unsigned char display2[4];	//显示
+extern unsigned char sys_time[2];	//DS1302读出来的时间
 
 
 void port_init(void)
@@ -41,10 +43,12 @@ void init_devices(void)
 	 CLI(); //disable all interrupts
 	 port_init();
 	 timer0_init();
-	//  ds1302_init();  //初始化时钟
+	 ds1302_init();  //初始化时钟
 	//  ReadData();  //读设定的时间数据
-    //  ds1302_read_time();//读取DS1302的时间
+     ds1302_read_time();//读取DS1302的时间
 	//  Check_SetClock();   //将DS1302读取到的时钟赋值给显示
+	min = sys_time[1];
+	hour = sys_time[0];
 
 	 MCUCR = 0x00;
 	 GICR  = 0x00;
@@ -84,6 +88,7 @@ void main(void)
 {
     init_devices();
     TurnOff_AllLED();
+	Hex_To_Bcd();
     while (1)
     {
         if (B_MainLoop)

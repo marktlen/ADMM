@@ -6,6 +6,7 @@
 #include "SetDisplayData.h"
 #include "key.h"
 #include "display.h"
+#include "DS1302.h"
 
 #define uchar unsigned char
 #define uint unsigned int

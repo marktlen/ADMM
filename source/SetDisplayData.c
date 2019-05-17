@@ -25,7 +25,7 @@ const unsigned char SmgTab[]={
 	SMG_Off
 };
 
-void Hex_To_Bcd(unsigned char Hour, unsigned char Min)
+void Hex_To_Bcd()
 {
 	if (min >= 60)
 	{

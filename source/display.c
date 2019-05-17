@@ -62,14 +62,14 @@ void display(void)  //显示时间
 			P_COM |= (1<<COM_P[i]);
 		}
 	}
-	// if (AP_Flag)
-	// {
-	// 	P_LED_PM |= (1 << W_LED_PM);
-	// 	P_LED_AM &= ~(1 << W_LED_AM);
-	// }
-	// else
-	// {
-	// 	P_LED_AM |= (1 << W_LED_AM);
-	// 	P_LED_PM &= ~(1 << W_LED_PM);
-	// }
+	if (AP_Flag)
+	{
+		P_LED_PM |= (1 << W_LED_PM);
+		P_LED_AM &= ~(1 << W_LED_AM);
+	}
+	else
+	{
+		P_LED_AM |= (1 << W_LED_AM);
+		P_LED_PM &= ~(1 << W_LED_PM);
+	}
 }
