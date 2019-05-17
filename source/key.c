@@ -8,7 +8,7 @@ unsigned char B_i;  //按钮序号
 extern uchar hour;  //时钟小时
 extern uchar min;   //时钟分钟
 unsigned char B_flag[5];    //按钮触发标记
-unsigned char B_state[5];   //按钮状态存储
+unsigned char B_state[5];   //按钮功能标记
 
 //传入所需要检测的针脚，进行当前按钮状态的检测
 unsigned char get_key(unsigned char key_input)
@@ -89,12 +89,11 @@ void Key_scan(void)
     {
         P_LED_ALARM |= (1<< W_LED_ALARM);
         blink_flag = 1; //晶码管开启闪烁
+        B_state[1] = 1; //设置系统时间开启
     }
     B_flag[0]=get_key(key_set);
     if (B_flag[0] == 1) //点击set
     {
         P_LED_PM |= (1 << W_LED_PM);
     }
-    
-    
 }

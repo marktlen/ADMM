@@ -58,11 +58,11 @@
 #define		SMG_E			SIGA|SIGD|SIGE|SIGF|SIGG              	
 #define		SMG_F			SIGA|SIGE|SIGF|SIGG
 #define		SMG_H			SIGB|SIGC|SIGG|SIGE|SIGF
-#define		SMG_Off			0X00
+#define		SMG_Off			(unsigned char)0
 
 
 void TurnOff_AllLED(void);
-void display();
+void display(void);
 void DelayXms(unsigned int x);
 
 #endif

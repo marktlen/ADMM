@@ -1,6 +1,6 @@
 #include "main.h"
 
-uchar MainTime = 0;	//主函数运行定时器
+unsigned int MainTime = 0;	//主函数运行定时器
 uchar B_MainLoop = 0;	//主函数开关
 
 uchar hour = 0;	//时钟小时
@@ -57,11 +57,17 @@ void init_devices(void)
 void timer0_ovf_isr(void)
 {
     TCNT0 = 0x83; //reload counter value
-    if(++MainTime >= 25)  //3.125ms
+    if(++MainTime % 25 == 0)  //3.125ms
 	{
-		MainTime = 0;
+		
 		B_MainLoop = 1;
 	}
+	if (MainTime >= 400)
+	{
+		MainTime = 0;
+		SEG_state = 1;
+	}
+	
 }
 
 void main(void)
@@ -74,7 +80,8 @@ void main(void)
         {
             B_MainLoop = 0;
             Key_scan();
-            display_time(hour,min);
+            //display_time(hour,min);
+			display();
         }
     }
 }
