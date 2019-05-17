@@ -5,6 +5,7 @@ unsigned char display2[4] = {SMG_0,SMG_1,SMG_2,SMG_3};	//显示存储
 unsigned char i;	//循环用
 unsigned char blink_flag = 0;	//闪烁标记
 unsigned char SEG_state = 1;	//SEG开关状态
+extern unsigned char ALARM_flag;	//警报灯闪烁
 extern unsigned char AP_Flag;	//AM,PM灯标记
 // unsigned char D_Kcount = 0;
 

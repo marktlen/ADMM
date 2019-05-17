@@ -7,15 +7,16 @@ extern unsigned char display2[4];   //晶码管当前显示内容
 unsigned char B_i;  //按钮序号
 extern unsigned char hour;  //时钟小时
 extern unsigned char min;   //时钟分钟
+unsigned char ALARM_flag = 0;    //警报灯状态
 unsigned char key_time[5] = {0,0,0,0,0}; //保持时间
 unsigned char B_flag[5];    //按钮触发标记
-unsigned char B_state[5];   //按钮功能标记
+unsigned char B_state[5] = {0,0,0,0,0};   //按钮功能标记
 
 //传入所需要检测的针脚，进行当前按钮状态的检测
 unsigned char get_key(unsigned char key_input)
 {
     //存储两个按钮的状态机内状态和时间
-    static unsigned char key_state[2] = {0,0} ,key_time[2] = {0,0}; 
+    static unsigned char key_state[5] = {0,0,0,0,0} ,key_time[5] = {0,0,0,0,0}; 
     unsigned char key_press, key_return = 0;  //输入针脚当前信号，定义状态返回值  
     key_press = key_input;
 
@@ -24,11 +25,22 @@ unsigned char get_key(unsigned char key_input)
     {
         B_i = 1;
     }
-    else
+    else if(key_input == key_set)
     {
         B_i = 0;
     }
-    
+    else if (key_input == key_pre)
+    {
+        B_i = 2;
+    }
+    else if (key_input == key_ok)
+    {
+        B_i = 3;
+    }
+    else
+    {
+        B_i = 4;
+    }
     //判断状态,状态机
     switch (key_state[B_i])
     {
@@ -88,6 +100,9 @@ void Key_scan(void)
 {
     B_flag[1]=get_key(key_clock);   //访问clock按钮，获得状态
     B_flag[0]=get_key(key_set); //访问set按钮
+    B_flag[2]=get_key(key_pre); //访问pre按钮
+    B_flag[3]=get_key(key_cheak);
+    B_flag[4]=get_key(key_ok);
 
     if (B_state[1] == 1)
     {
@@ -113,11 +128,37 @@ void Key_scan(void)
     {
         /* code */
     }
+    else if (B_state[2] == 1)   //提前吃药，等等行程开关撞到
+    {
+        P_motor &= ~(1<<W_motor);   //打开电机
+        if (B_flag[3] == 1) //行程开关
+        {
+            B_state[3] = 1;
+            B_state[2] = 0;
+            P_motor |= (1<<W_motor);   //关闭电机
+        }
+    }
+    else if (B_state[3] == 1)   //等等ok键
+    {
+        if (ALARM_flag)
+        {
+            P_LED_ALARM |= (1<< W_LED_ALARM);
+        }
+        else
+        {
+            P_LED_ALARM &= ~(1<< W_LED_ALARM);
+        }
+        if (B_flag[4] == 1) //点击OK键
+        {
+            B_state[3] = 0;
+            P_LED_ALARM &= ~(1<< W_LED_ALARM);
+        }
+    }
     else
     {
         if (B_flag[1] == 1) //点击clock
         {
-            P_LED_AM |= (1 << W_LED_AM);
+           
         }
         if (B_flag[1] == 2) //长按clock
         {
@@ -127,7 +168,12 @@ void Key_scan(void)
         }
         if (B_flag[0] == 1) //点击set
         {
+           
+        }
+        if (B_flag[2] == 1) //点击pre
+        {
             P_LED_PM |= (1 << W_LED_PM);
+            B_state[2] = 1;    //进入提前吃药模式
         }
     }   
 }

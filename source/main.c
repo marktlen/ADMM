@@ -2,7 +2,7 @@
 
 unsigned int MainTime = 0;	//主函数运行定时器
 uchar B_MainLoop = 0;	//主函数开关
-uchar SEG8_flag = 0;
+// uchar SEG8_flag = 0;
 
 uchar hour = 0;	//时钟小时
 uchar min = 0;	//时钟分钟
@@ -10,7 +10,9 @@ uchar min = 0;	//时钟分钟
 uchar counter = 0;	
 
 extern unsigned char SEG_state;	//晶码管开关状态
-extern unsigned char blink_flag;
+// extern unsigned char blink_flag;
+extern unsigned char ALARM_flag;	//警报灯状态
+
 
 void port_init(void)
 {
@@ -67,6 +69,14 @@ void timer0_ovf_isr(void)
 	{
 		MainTime = 0;
 		SEG_state = 1;
+		if (ALARM_flag)
+		{
+			ALARM_flag = 0;
+		}
+		else
+		{
+			ALARM_flag = 1;
+		}
 	}
 }
 
