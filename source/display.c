@@ -5,6 +5,7 @@ unsigned char display2[4];
 unsigned char i;
 unsigned char blink_flag = 0;
 unsigned char SEG_state = 1;
+unsigned char D_Kcount;
 
 const unsigned char SmgTab[]={
 	SMG_0,
@@ -39,44 +40,74 @@ void DelayXms(unsigned int x)
 
 void TurnOff_AllLED(void)
 {
-	// P_SEG &= SMG_Off;
+	P_SEG &= SMG_Off;
     P_COM1 |= (1<<W_COM1);
 	P_COM2 |= (1<<W_COM2);
 	P_COM3 |= (1<<W_COM3);
 	P_COM4 |= (1<<W_COM4);
 }
 
-void display_time(unsigned char hour,unsigned char min)  //显示时间
+void display()  //显示时间
 {
 
-    display2[0] = SmgTab[hour/10];  //左一，小时大于10时显示
-    display2[1] = SmgTab[hour%10];
-    display2[2] = SmgTab[min/10];
-    display2[3] = SmgTab[min%10];
-	if (blink_flag == 1)	//是否闪烁
+    P_COM1 |= (1<<4);
+	P_COM2 |= (1<<5);
+	P_COM3 |= (1<<6);
+	P_COM4 |= (1<<7);
+	P_SEG =0X00;
+	switch(D_Kcount)	
 	{
-		if (SEG_state)	//在闪烁时，数码管状态
-		{
-			for (i = 0; i < 4; i++)
-			{
-				P_COM &= ~(1<<COM_P[i]);
-				P_SEG |= display2[i];
-				DelayXms(5);
-				P_SEG &= SMG_Off;
-				P_COM |= (1<<COM_P[i]);
-			}
-		}
+		case 1:
+			
+			if(Led_Data1 & 0x01)	{P_SEG1 |= 1<<0;}
+			if(Led_Data1 & 0x02)	{P_SEG2 |= 1<<1;}
+			if(Led_Data1 & 0x04)	{P_SEG3 |= 1<<2;}
+			if(Led_Data1 & 0x08)	{P_SEG4 |= 1<<3;}
+			if(Led_Data1 & 0x10)	{P_SEG5 |= 1<<4;}
+			if(Led_Data1 & 0x20)	{P_SEG6 |= 1<<5;}
+			if(Led_Data1 & 0x40)	{P_SEG7 |= 1<<6;}
+			//if(Led_Data1 & 0x80)	{P_SEG8 = 1<<7;}
+			P_COM1 &= ~(1<<4);
+			break;
+		case 2:
+			
+			
+			if(Led_Data2 & 0x01)	{P_SEG1 |= 1<<0;}
+			if(Led_Data2 & 0x02)	{P_SEG2 |= 1<<1;}
+			if(Led_Data2 & 0x04)	{P_SEG3 |= 1<<2;}
+			if(Led_Data2 & 0x08)	{P_SEG4 |= 1<<3;}
+			if(Led_Data2 & 0x10)	{P_SEG5 |= 1<<4;}
+			if(Led_Data2 & 0x20)	{P_SEG6 |= 1<<5;}
+			if(Led_Data2 & 0x40)	{P_SEG7 |= 1<<6;}
+			if(Led_Data2 & 0x80)	{P_SEG8 |= 1<<7;}
+			P_COM2 &= ~(1<<5);																		 
+			break;
+		case 3:
+			
+			
+			if(Led_Data3 & 0x01)	{P_SEG1 |= 1<<0;}
+			if(Led_Data3 & 0x02)	{P_SEG2 |= 1<<1;}
+			if(Led_Data3 & 0x04)	{P_SEG3 |= 1<<2;}
+			if(Led_Data3 & 0x08)	{P_SEG4 |= 1<<3;}
+			if(Led_Data3 & 0x10)	{P_SEG5 |= 1<<4;}
+			if(Led_Data3 & 0x20)	{P_SEG6 |= 1<<5;}
+			if(Led_Data3 & 0x40)	{P_SEG7 |= 1<<6;}
+			//if(Led_Data1 & 0x80)	{P_SEG8 = 1<<7;}
+			P_COM3 &= ~(1<<6);																 
+			break;
+		case 4:
+
+			if(Led_Data4 & 0x01)	{P_SEG1 |= 1<<0;}
+			if(Led_Data4 & 0x02)	{P_SEG2 |= 1<<1;}
+			if(Led_Data4 & 0x04)	{P_SEG3 |= 1<<2;}
+			if(Led_Data4 & 0x08)	{P_SEG4 |= 1<<3;}
+			if(Led_Data4 & 0x10)	{P_SEG5 |= 1<<4;}
+			if(Led_Data4 & 0x20)	{P_SEG6 |= 1<<5;}
+			if(Led_Data4 & 0x40)	{P_SEG7 |= 1<<6;}
+			//if(Led_Data1 & 0x80)	{P_SEG8 = 1<<7;}
+			P_COM4 &= ~(1<<7);																	 
+			break;
+		default: break;
 	}
-	else	//不闪烁，正常显示
-	{
-		for (i = 0; i < 4; i++)
-		{
-			P_COM &= ~(1<<COM_P[i]);
-			P_SEG |= display2[i];
-			DelayXms(5);
-			P_SEG &= SMG_Off;
-			P_COM |= (1<<COM_P[i]);
-		}
-	}
-	
+	if(++D_Kcount > 4) D_Kcount = 1;
 }

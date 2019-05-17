@@ -8,8 +8,8 @@
 #define  P_COM2    PORTC  //RA3  //RB1       //9       //数码管2
 #define  P_COM3    PORTC	//RA2  //RC6       //8      //数码管3
 #define  P_COM4    PORTC  	//RB5  //RA3       //6 //数码管4
-
 #define P_COM PORTC
+
 //COM对应位置
 #define W_COM1 4
 #define W_COM2 5
@@ -29,7 +29,6 @@
 #define  P_SEG6   PORTB	//RE3	 //RC4    //10
 #define  P_SEG7   PORTB	//RB4	 //RA4    //5
 #define  P_SEG8   PORTB		// RB2 	//RA0    //3    
-
 #define P_SEG   PORTB
 
 #define		SIGA		(unsigned char)0x01
@@ -63,7 +62,7 @@
 
 
 void TurnOff_AllLED(void);
-void display_time(unsigned char hour,unsigned char min);
+void display();
 void DelayXms(unsigned int x);
 
 #endif
