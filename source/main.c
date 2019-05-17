@@ -68,7 +68,6 @@ void timer0_ovf_isr(void)
 		MainTime = 0;
 		SEG_state = 1;
 	}
-	
 }
 
 void main(void)

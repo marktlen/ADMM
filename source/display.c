@@ -55,6 +55,7 @@ void display(void)  //显示时间
 		{
 			P_COM &= ~(1<<COM_P[i]);
 			P_SEG |= display2[i];
+			P_SEG8 |= (1<<W_SEG8);
 			DelayXms(5);
 			P_SEG &= SMG_Off;
 			P_COM |= (1<<COM_P[i]);
