@@ -1,12 +1,14 @@
 #include "main.h"
 
-uchar MainTime = 0;
-uchar B_MainLoop = 0;
+uchar MainTime = 0;	//主函数运行定时器
+uchar B_MainLoop = 0;	//主函数开关
 
-uchar hour = 0;
-uchar min = 0;
+uchar hour = 0;	//时钟小时
+uchar min = 0;	//时钟分钟
 
-extern unsigned char SEG_state;
+uchar counter = 0;	
+
+extern unsigned char SEG_state;	//晶码管开关状态
 extern unsigned char blink_flag;
 
 void port_init(void)
@@ -60,18 +62,6 @@ void timer0_ovf_isr(void)
 		MainTime = 0;
 		B_MainLoop = 1;
 	}
-	// if (blink_flag)
-	// {
-	// 	if (SEG_state)
-	// 	{
-	// 		SEG_state = 0;
-	// 	}
-	// 	else
-	// 	{
-	// 		SEG_state = 1;
-	// 	}
-	// }
-	
 }
 
 void main(void)

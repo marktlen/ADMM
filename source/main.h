@@ -17,9 +17,9 @@
 #define W_LED_AM 5
 #define W_LED_PM 6
 
-void port_init(void);
-void timer0_init(void);
-void init_devices(void);
-void timer0_ovf_isr(void);
+void port_init(void); //IO初始化
+void timer0_init(void); //timer0初始化
+void init_devices(void);    //单片机环境初始化
+void timer0_ovf_isr(void);  //timer0溢出中断
 
 #endif
