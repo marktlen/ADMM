@@ -3,9 +3,9 @@
 #include <iom16v.h>
 #include <macros.h>
 #include <eeprom.h>
+#include "SetDisplayData.h"
 #include "key.h"
 #include "display.h"
-#
 
 #define uchar unsigned char
 #define uint unsigned int

@@ -10,7 +10,7 @@
 #define  P_COM4    PORTC  	//RB5  //RA3       //6 //数码管4
 #define P_COM PORTC
 
-//COM对应位置
+//COM接入针脚位置
 #define W_COM1 4
 #define W_COM2 5
 #define W_COM3 6
@@ -30,6 +30,7 @@
 #define  P_SEG7   PORTB	//RB4	 //RA4    //5
 #define  P_SEG8   PORTB		// RB2 	//RA0    //3    
 #define P_SEG   PORTB
+#define W_SEG8 7    //时钟:灯位置
 
 #define		SIGA		(unsigned char)0x01
 #define		SIGB		(unsigned char)0x02

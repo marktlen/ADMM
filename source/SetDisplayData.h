@@ -14,7 +14,8 @@
 #define  OFF_LED_MudFlash()   Led_Data2 &= ~(1<<7)
 
 
-void Hex_To_Bcd(unsigned char dispData, unsigned char Class);
-void SetDisplayData();
+void Hex_To_Bcd(unsigned char, unsigned char);
+void cheakTime(void);
+void SetDisplayData(void);
 
 #endif

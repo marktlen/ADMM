@@ -1,13 +1,13 @@
-#include "key.h"
+#include "main.h"
 
 // extern unsigned char B_set_time = 0;
 extern unsigned char blink_flag;    //是否闪烁
 extern unsigned char SEG_state; //SEG开关状态
 extern unsigned char display2[4];   //晶码管当前显示内容
 unsigned char B_i;  //按钮序号
-extern uchar hour;  //时钟小时
-extern uchar min;   //时钟分钟
-unsigned char key_time[5] = 0; //保持时间
+extern unsigned char hour;  //时钟小时
+extern unsigned char min;   //时钟分钟
+unsigned char key_time[5] = {0,0,0,0,0}; //保持时间
 unsigned char B_flag[5];    //按钮触发标记
 unsigned char B_state[5];   //按钮功能标记
 
@@ -93,11 +93,14 @@ void Key_scan(void)
     {
         if (B_flag[1] == 1) //点击clock
         {
-            P_LED_AM &= ~(1 << W_LED_AM);            
+            P_LED_AM &= ~(1 << W_LED_AM);     
+            Hex_To_Bcd(hour,++min);
         }
-        if (B_flag[1] == 2) //长按clock
+        if (B_flag[1] == 3) //长按clock
         {
             P_LED_ALARM &= ~(1<< W_LED_ALARM);
+            min += 10;
+            Hex_To_Bcd(hour,min);
         }
         if (B_flag[0] == 1) //点击set
         {

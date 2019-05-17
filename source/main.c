@@ -2,6 +2,7 @@
 
 unsigned int MainTime = 0;	//主函数运行定时器
 uchar B_MainLoop = 0;	//主函数开关
+uchar SEG8_flag = 0;
 
 uchar hour = 0;	//时钟小时
 uchar min = 0;	//时钟分钟
@@ -62,7 +63,7 @@ void timer0_ovf_isr(void)
 		
 		B_MainLoop = 1;
 	}
-	if (MainTime >= 400)
+	if (MainTime >= 200)
 	{
 		MainTime = 0;
 		SEG_state = 1;
