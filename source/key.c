@@ -122,7 +122,8 @@ void Key_scan(void)
         {
             P_LED_PM &= ~(1 << W_LED_PM);
             B_state[1] = 0; //设置系统时间关闭
-            blink_flag = 0;
+            blink_flag = 0; //关闭系统时间
+            ds1302_write_time(hour,min);
         }
     }
     else if (B_state[0] == 1)

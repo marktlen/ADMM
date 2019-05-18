@@ -95,7 +95,7 @@ void main(void)
         {
             B_MainLoop = 0;
             Key_scan();
-            //display_time(hour,min);
+            ds1302_read_time();//读取DS1302的时间
 			display();
         }
     }

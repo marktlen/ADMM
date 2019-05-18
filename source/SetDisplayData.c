@@ -35,6 +35,7 @@ void Hex_To_Bcd()
 	if (hour >= 12)
 	{
 		hour %= 12;
+		display2[0] = SmgTab[SMG_Off];
 		if (AP_Flag)	//切换AM和PM灯
 		{
 			AP_Flag = 0;
