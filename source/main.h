@@ -7,6 +7,7 @@
 #include "key.h"
 #include "display.h"
 #include "DS1302.h"
+#include "EEPROM.h"
 
 #define uchar unsigned char
 #define uint unsigned int
