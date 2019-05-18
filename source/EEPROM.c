@@ -1,14 +1,16 @@
 #include "main.h"
 
+extern unsigned char bookTime[2];   //预约时间
+
 //用于保存定时时间
 void Memory_Write(unsigned int Addr,unsigned char Value)
 {	
-	EEARH = 0x00;
-	while(EECR & (1 << EEWE));
+	EEARH = 0x00;	//高位地址置零
+	while(EECR & (1 << EEWE));	//等待EEWE=0
 	EEARL = Addr;
 	EEDR = Value;
-	EECR |= (1 << EEMWE);
-	EECR |= (1 << EEWE);
+	EECR |= (1 << EEMWE);	//EEPROM主写使能
+	EECR |= (1 << EEWE);	//EEPROM写使能
 }
 
 /***********************************************
@@ -29,4 +31,10 @@ unsigned char Memory_Read(unsigned int Addr)
 	value = EEDR;
 
 	return value;
+}
+
+void ReadData(void)
+{
+	bookTime[0] = Memory_Read(add_book_hour);
+	bookTime[1] = Memory_Read(add_book_min);
 }

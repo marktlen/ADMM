@@ -13,7 +13,10 @@ extern unsigned char SEG_state;	//晶码管开关状态
 // extern unsigned char blink_flag;
 extern unsigned char ALARM_flag;	//警报灯状态
 extern unsigned char display2[4];	//显示
-extern unsigned char sys_time[2];	//DS1302读出来的时间
+extern unsigned char sys_time[2];	//DS1302读出来的时间，时,分
+unsigned char bookTime[2] = {12,0};	//预约时间，时，分
+extern unsigned char check_set;    //查看预约时间标记
+unsigned char check_time = 0; //查看时间
 
 
 void port_init(void)
@@ -44,7 +47,7 @@ void init_devices(void)
 	 port_init();
 	 timer0_init();
 	 ds1302_init();  //初始化时钟
-	//  ReadData();  //读设定的时间数据
+	 ReadData();  //读设定的时间数据
      ds1302_read_time();//读取DS1302的时间
 	//  Check_SetClock();   //将DS1302读取到的时钟赋值给显示
 	min = sys_time[1];
@@ -69,11 +72,10 @@ void timer0_ovf_isr(void)
 		
 		B_MainLoop = 1;
 	}
-	if (MainTime >= 200)
+	if (MainTime % 200 == 0)
 	{
-		MainTime = 0;
 		SEG_state = 1;
-		if (ALARM_flag)
+		if (ALARM_flag)	//警报灯闪烁
 		{
 			ALARM_flag = 0;
 		}
@@ -82,20 +84,30 @@ void timer0_ovf_isr(void)
 			ALARM_flag = 1;
 		}
 	}
+	if (MainTime >= 400)
+	{
+		MainTime = 0;
+		if (++check_time > 50) //这里控制查看时长
+		{
+			check_time = 0;
+			if (check_set)	//查看预约恢复
+			{
+				check_set = 0;
+			}
+		}
+	}
 }
 
 void main(void)
 {
     init_devices();
     TurnOff_AllLED();
-	Hex_To_Bcd();
     while (1)
     {
         if (B_MainLoop)
         {
             B_MainLoop = 0;
             Key_scan();
-            ds1302_read_time();//读取DS1302的时间
 			display();
         }
     }
