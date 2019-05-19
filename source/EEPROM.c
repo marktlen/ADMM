@@ -18,7 +18,7 @@ void Memory_Write(unsigned int Addr,unsigned char Value)
 函数功能：读数据/程序寄存器
 入口参数：Addr - 读取地址
 出口参数：返回读取地址相应数值
-备注：
+备注：可以用地址在0~511之间，一个地址为一个位
 ************************************************/
 unsigned char Memory_Read(unsigned int Addr)
 {
