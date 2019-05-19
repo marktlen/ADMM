@@ -1,10 +1,11 @@
 #include "main.h"
 
-extern unsigned char display2[4];
+extern unsigned char display2[4];	//数码管显示
 extern unsigned char min;
 extern unsigned char hour;
 unsigned char AP_Flag = 0;	//为0时亮AM灯,为1时亮PM灯
 
+//字符集
 const unsigned char SmgTab[]={
 	SMG_0,
 	SMG_1,
@@ -25,6 +26,7 @@ const unsigned char SmgTab[]={
 	SMG_Off
 };
 
+//确保时间在12小时和59分钟以内，调整AM和PM灯，赋予需要显示的字符
 void Hex_To_Bcd(void)
 {
 	if (min >= 60)
