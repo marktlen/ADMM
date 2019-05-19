@@ -9,6 +9,7 @@ extern unsigned char hour;  //时钟小时
 extern unsigned char min;   //时钟分钟
 extern unsigned char bookTime[2];   //预约时间
 extern unsigned char sys_time[2];	//DS1302读出来的时间，时,分
+extern unsigned char AP_Flag;	//为0时亮AM灯,为1时亮PM灯
 unsigned char ALARM_flag = 0;    //警报灯状态
 unsigned char key_time[5] = {0,0,0,0,0}; //保持时间
 unsigned char B_flag[5];    //按钮触发标记
@@ -129,8 +130,7 @@ void Key_scan(void)
     }
     else if (B_state[0] == 1)   //预约时间设置模式
     {
-        hour = bookTime[0];
-        min = bookTime[1];
+        
         if (B_flag[0] == 1) //点击clock,加一分钟
         {
             P_LED_ALARM |= (1<< W_LED_ALARM);
@@ -146,14 +146,19 @@ void Key_scan(void)
         if (B_flag[1] == 1) //点击
         {
             B_state[0] = 0; //设置预约时间关闭
+            if (AP_Flag == 1)   //保存为24小时制，方便与系统时间比较
+            {
+                hour += 12;
+            }
             Memory_Write(add_book_min,min);
             Memory_Write(add_book_hour,hour);
+            blink_flag = 0; //关闭闪烁
             hour = sys_time[0];
             min = sys_time[1];
         }
         
     }
-    else if (B_state[2] == 1)   //提前吃药，等等行程开关撞到
+    else if (B_state[2] == 1)   //吃药，等行程开关撞到
     {
         P_motor &= ~(1<<W_motor);   //打开电机
         if (B_flag[3] == 1) //行程开关
@@ -196,6 +201,8 @@ void Key_scan(void)
         {
             blink_flag = 1; //晶码管开启闪烁
             B_state[0] = 1; //进入预约时间的设置模式
+            hour = bookTime[0];
+            min = bookTime[1];
         }
         if (B_flag[2] == 1) //点击pre
         {
@@ -210,6 +217,10 @@ void Key_scan(void)
         {
             hour = sys_time[0];
             min = sys_time[1];
+        }
+        if (sys_time[0] == bookTime[0] && sys_time[1] == bookTime[1])
+        {
+            B_state[2] = 1; //进入提前吃药模式
         }
     }   
 }
