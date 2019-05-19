@@ -9,6 +9,7 @@
 #include "DS1302.h"
 #include "EEPROM.h"
 
+//这个省事的东西没怎么用啊
 #define uchar unsigned char
 #define uint unsigned int
 

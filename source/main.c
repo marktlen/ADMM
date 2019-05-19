@@ -49,7 +49,6 @@ void init_devices(void)
 	 ds1302_init();  //初始化时钟
 	 ReadData();  //读设定的时间数据
      ds1302_read_time();//读取DS1302的时间
-	//  Check_SetClock();   //将DS1302读取到的时钟赋值给显示
 	min = sys_time[1];
 	hour = sys_time[0];
 
@@ -100,15 +99,15 @@ void timer0_ovf_isr(void)
 
 void main(void)
 {
-    init_devices();
-    TurnOff_AllLED();
+    init_devices();	//初始化所有驱动
+    TurnOff_AllLED();	//关闭数码管
     while (1)
     {
-        if (B_MainLoop)
+        if (B_MainLoop)	//循环锁
         {
-            B_MainLoop = 0;
-            Key_scan();
-			display();
+            B_MainLoop = 0;	//关闭循环
+            Key_scan();	//键盘扫描,操作逻辑
+			display();	//数码管显示,显示逻辑
         }
     }
 }
