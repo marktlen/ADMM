@@ -1,7 +1,7 @@
 #include "main.h"
 
 
-unsigned char display2[4] = {SMG_0,SMG_1,SMG_2,SMG_3};	//显示存储
+unsigned char display2[4];	//显示存储
 unsigned char i;	//循环用
 unsigned char blink_flag = 0;	//闪烁标记
 unsigned char SEG_state = 1;	//SEG开关状态
@@ -11,6 +11,7 @@ extern unsigned char AP_Flag;	//AM,PM灯标记
 
 const unsigned char COM_P[]={W_COM1,W_COM2,W_COM3,W_COM4};
 
+//延时函数
 void DelayXms(unsigned int x)
 {
 	unsigned int i,j;
@@ -20,6 +21,7 @@ void DelayXms(unsigned int x)
 	}
 }
 
+//关闭所有数码管
 void TurnOff_AllLED(void)
 {
 	P_SEG &= SMG_Off;
@@ -29,7 +31,8 @@ void TurnOff_AllLED(void)
 	P_COM4 |= (1<<W_COM4);
 }
 
-void display(void)  //显示时间
+//显示时间，控制数码管和AM、PM灯状态
+void display(void)
 {
 	if (blink_flag == 1)	//是否闪烁
 	{

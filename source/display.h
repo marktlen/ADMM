@@ -16,10 +16,6 @@
 #define W_COM3 6
 #define W_COM4 7
 
-#define  Led_Data1    display2[0]   //数码管1
-#define  Led_Data2    display2[1]   //数码管2
-#define  Led_Data3    display2[2]   //数码管3
-#define  Led_Data4    display2[3]   //数码管4
 //8个SEG
 #define  P_SEG1   PORTB	//RA0 	//RC3    //11
 #define  P_SEG2   PORTB	//RA1	 //RC5    //7
@@ -32,6 +28,7 @@
 #define P_SEG   PORTB
 #define W_SEG8 7    //时钟:灯位置
 
+//数码管对应管码
 #define		SIGA		(unsigned char)0x01
 #define		SIGB		(unsigned char)0x02
 #define		SIGC		(unsigned char)0x04
@@ -41,7 +38,7 @@
 #define		SIGG		(unsigned char)0x40
 #define		SIGM		(unsigned char)0x80
 
-
+//字符集
 #define		SMG_0			SIGA|SIGB|SIGC|SIGD|SIGE|SIGF         	
 #define		SMG_1			SIGB|SIGC                             	
 #define		SMG_2			SIGA|SIGB|SIGD|SIGE|SIGG              	
