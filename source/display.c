@@ -46,7 +46,6 @@ void display(void)
 				P_SEG &= SMG_Off;
 				P_COM |= (1<<COM_P[i]);
 			}
-			SEG_state = 0;
 		}
 		else
 		{
