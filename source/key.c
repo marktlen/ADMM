@@ -115,11 +115,13 @@ void Key_scan(void)
         {
             ++min;
             Hex_To_Bcd();
+            SEG_state = 1;
         }
         if (B_flag[1] == 3) //长按clock,加十分钟
         {
             min += 10;
             Hex_To_Bcd();
+            SEG_state = 1;
         }
         if (B_flag[0] == 1) //点击set,完成设置保存到DS1302并退出状态
         {
@@ -136,12 +138,14 @@ void Key_scan(void)
             P_LED_ALARM |= (1<< W_LED_ALARM);
             ++min;
             Hex_To_Bcd();
+            SEG_state = 1;
         }
         if (B_flag[0] == 3) //长按clock,加十分钟
         {
             P_LED_ALARM &= ~(1<< W_LED_ALARM);
             min += 10;
             Hex_To_Bcd();
+            SEG_state = 1;
         }
         if (B_flag[1] == 1) //点击
         {
