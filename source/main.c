@@ -73,7 +73,6 @@ void timer0_ovf_isr(void)
 	}
 	if (MainTime % 200 == 0)
 	{
-		SEG_state = 1;
 		if (ALARM_flag)	//警报灯闪烁
 		{
 			ALARM_flag = 0;
@@ -86,6 +85,15 @@ void timer0_ovf_isr(void)
 	if (MainTime >= 400)
 	{
 		MainTime = 0;
+		if(SEG_state)
+		{
+			SEG_state = 0;
+		}
+		else
+		{
+			SEG_state = 1;
+		}
+		
 		if (++check_time > 50) //这里控制查看时长
 		{
 			check_time = 0;
