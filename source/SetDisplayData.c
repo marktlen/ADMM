@@ -34,18 +34,20 @@ void Hex_To_Bcd(void)
 		hour += min/60;
 		min = 0;
 	}
+	if ((hour/12)%2)
+	{
+		AP_Flag = 0;
+	}
+	else
+	{
+		AP_Flag = 1;
+	}
+	
+	
 	if (hour > 12)
 	{
 		hour %= 13;
 		display2[0] = SmgTab[SMG_Off];
-		if (AP_Flag)	//切换AM和PM灯
-		{
-			AP_Flag = 0;
-		}
-		else
-		{
-			AP_Flag = 1;
-		}
 	}
 	if (hour/10 > 0)
 	{
