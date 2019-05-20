@@ -17,6 +17,7 @@ extern unsigned char sys_time[2];	//DS1302读出来的时间，时,分
 unsigned char bookTime[2] = {12,0};	//预约时间，时，分
 extern unsigned char check_set;    //查看预约时间标记
 unsigned char check_time = 0; //查看时间
+extern unsigned char timeOut;  //超时返回标记
 
 
 void port_init(void)
@@ -71,7 +72,7 @@ void timer0_ovf_isr(void)
 		
 		B_MainLoop = 1;
 	}
-	if (MainTime % 200 == 0)
+	if (MainTime % 100 == 0)
 	{
 		if (ALARM_flag)	//警报灯闪烁
 		{
@@ -82,7 +83,7 @@ void timer0_ovf_isr(void)
 			ALARM_flag = 1;
 		}
 	}
-	if (MainTime >= 400)
+	if (MainTime >= 200)
 	{
 		MainTime = 0;
 		if(SEG_state)
@@ -93,8 +94,8 @@ void timer0_ovf_isr(void)
 		{
 			SEG_state = 1;
 		}
-		
-		if (++check_time > 50) //这里控制查看时长
+			++timeOut;
+		if (++check_time > 150) //这里控制查看时长
 		{
 			check_time = 0;
 			if (check_set)	//查看预约恢复
