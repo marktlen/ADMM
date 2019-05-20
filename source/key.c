@@ -15,6 +15,7 @@ unsigned char key_time[5] = {0,0,0,0,0}; //保持时间
 unsigned char B_flag[5];    //按钮触发标记
 unsigned char B_state[5] = {0,0,0,0,0};   //按钮功能标记
 unsigned char check_set = 0;    //查看预约时间标记
+unsigned char timeOut = 0;  //超时返回标记
 
 //传入所需要检测的针脚，进行当前按钮状态的检测
 unsigned char get_key(unsigned char key_input)
@@ -113,17 +114,19 @@ void Key_scan(void)
     {
         if (B_flag[1] == 1) //点击clock,加一分钟
         {
+            timeOut = 0;//超时计算标记
             ++min;
             Hex_To_Bcd();
             SEG_state = 1;
         }
         if (B_flag[1] == 3) //长按clock,加十分钟
         {
+            timeOut = 0;//超时计算标记
             min += 10;
             Hex_To_Bcd();
             SEG_state = 1;
         }
-        if (B_flag[0] == 1) //点击set,完成设置保存到DS1302并退出状态
+        if (B_flag[0] == 1 || timeOut >= 150) //点击set或者5s未确认,完成设置保存到DS1302并退出状态
         {
             B_state[1] = 0; //设置系统时间关闭
             blink_flag = 0; //关闭闪烁
@@ -132,31 +135,34 @@ void Key_scan(void)
     }
     else if (B_state[0] == 1)   //预约时间设置模式
     {
-        
-        if (B_flag[0] == 1) //点击clock,加一分钟
+        if (B_flag[0] == 1) //点击set,加一分钟
         {
+            timeOut = 0;//超时计算标记
             P_LED_ALARM |= (1<< W_LED_ALARM);
             ++min;
             Hex_To_Bcd();
             SEG_state = 1;
         }
-        if (B_flag[0] == 3) //长按clock,加十分钟
+        if (B_flag[0] == 3) //长按set,加十分钟
         {
+            timeOut = 0;//超时计算标记
             P_LED_ALARM &= ~(1<< W_LED_ALARM);
             min += 10;
             Hex_To_Bcd();
             SEG_state = 1;
         }
-        if (B_flag[1] == 1) //点击
+        if (B_flag[1] == 1 || timeOut >= 150) //点击clock或5s未确认,完成设置保持到EEPROM，退出此状态
         {
             B_state[0] = 0; //设置预约时间关闭
             if (AP_Flag == 1)   //保存为24小时制，方便与系统时间比较
             {
                 hour += 12;
             }
-            Memory_Write(add_book_min,min);
-            Memory_Write(add_book_hour,hour);
+            Memory_Write(add_book_min,min); //保存到EEPROM
+            Memory_Write(add_book_hour,hour);   //保持到EEPROM
             blink_flag = 0; //关闭闪烁
+            bookTime[0] = hour;
+            bookTime[1] = min;
             hour = sys_time[0];
             min = sys_time[1];
         }
@@ -191,7 +197,7 @@ void Key_scan(void)
     else
     {
         ds1302_read_time();//读取DS1302的时间
-        Hex_To_Bcd();
+        Hex_To_Bcd();   //将读取到的时间设置给时间变量hour和min
         if (B_flag[1] == 2) //长按clock
         {
             blink_flag = 1; //晶码管开启闪烁
