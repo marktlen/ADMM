@@ -16,6 +16,7 @@ unsigned char B_flag[5];    //按钮触发标记
 unsigned char B_state[5] = {0,0,0,0,0};   //按钮功能标记
 unsigned char check_set = 0;    //查看预约时间标记
 unsigned char timeOut = 0;  //超时返回标记
+unsigned char onceLock = 0; //单步锁
 
 //传入所需要检测的针脚，进行当前按钮状态的检测
 unsigned char get_key(unsigned char key_input)
@@ -228,9 +229,15 @@ void Key_scan(void)
             hour = sys_time[0];
             min = sys_time[1];
         }
-        if (sys_time[0] == bookTime[0] && sys_time[1] == bookTime[1])
+        if (sys_time[0] == bookTime[0] && sys_time[1] == bookTime[1] && onceLock == 0)
         {
             B_state[2] = 1; //进入提前吃药模式
+            onceLock = 1;
+        }
+         //下一分钟打开单步锁，防止一分钟内反复触发吃药
+        if (sys_time[1] == bookTime[1]+1)
+        {
+            onceLock = 0;
         }
     }   
 }
