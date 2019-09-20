@@ -184,10 +184,12 @@ void Key_scan(void)
         if (ALARM_flag) //对警报灯闪烁标志进行处理
         {
             P_LED_ALARM |= (1<< W_LED_ALARM);
+            P_BOOZ |= (1<<W_BOOZ);
         }
         else
         {
             P_LED_ALARM &= ~(1<< W_LED_ALARM);
+            P_BOOZ &= ~(1<<W_BOOZ);
         }
         if (B_flag[4] == 1) //点击OK键,退出状态
         {

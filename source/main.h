@@ -21,6 +21,9 @@
 #define W_LED_AM 5
 #define W_LED_PM 6
 
+#define P_BOOZ PORTA
+#define W_BOOZ 1
+
 //电机接入位置
 #define P_motor PORTD
 #define W_motor 0
